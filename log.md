@@ -1,0 +1,60 @@
+# Last Film 项目修改日志
+
+## 2025-02-14
+
+- 新增 `docs/功能清单与待确认项.md`：根据四张参考图（侧拉抽屉胶片、设置、相册、首页）梳理业务，结合开发基础需求制作功能清单，并列出 18 项定义模糊的待确认问题，供产品/需求方回答
+- 完善 `docs/功能清单与待确认项.md`：根据 Q1–Q18 回复更新文档，新增已确认结论汇总、应用导航结构、胶片配置示例、数据库设计定稿、开发任务拆分（四阶段）、附录确认记录；移除胶片水印设置；待确认项仅剩 Q13（侧拉抽屉触发方式）
+- 确认 Q13：侧拉抽屉通过点击快门左边的胶卷按钮打开，文档已更新
+- 完成 APP 开发：补全 main.dart（GetMaterialApp、ScreenUtil、路由）、lang、logger、数据库、胶片配置、首页相机、侧拉抽屉 FILMS/ROLLS、相册页、设置页、胶片卷详情、从相册创建胶片卷；修复 FilmDrawer 跳转 createRoll；修复 MainView 底部导航溢出；移除 google_fonts 以符合无网络要求；添加 iOS 相机和相册权限
+- 移除底部菜单：MainView 仅展示相机页，相册通过快门右侧按钮跳转进入
+- 底部控制条改为上下两行：上行小图标（闪光灯、切换、计时器、比例、设置），下行三大按钮（胶片、快门、相册）
+- 抽屉：点击遮罩或返回按钮可关闭；移除分类（全部/最近/收藏）；抽屉从状态栏下方开始，不遮挡状态栏
+- 移除创建胶片卷：抽屉和相册不再提供创建入口，使用 7 种胶片对应的默认胶片卷
+- 设置页：移除「找到我们」；合并设置与其他；新增隐私政策、用户协议页面（英文内容）；当前版本移至最底部
+- 设置页：移除 PRO 卡片；「共拍摄胶片」数量改为显示相册内照片总数
+- 首页底部：胶片按钮和相册按钮靠近拍照按钮，改为居中布局，按钮间距 25
+- 闪光灯：高亮（实心图标）表示打开，再点击关闭；前置摄像头时自动关闭并置灰不可点，后置可再次选择
+- 切换摄像头：切换时先显示黑色加载态减少白屏，分辨率改为 medium 加快初始化
+- 第三按钮：延迟快门，可选 3s/5s/8s/10s，选中时图标高亮为琥珀色
+- 第四按钮：九宫格构图辅助开关，高亮表示开启
+- 暗色模式：新增 ThemeController、darkTheme，设置页开关可即时切换；相册、设置、胶片卷详情、抽屉、隐私政策、用户协议、创建卷等页面适配主题色
+- 快门声音：新增 native_camera_sound，拍照时根据 shutter_sound 设置播放或静音
+- 相册：右上角添加「添加照片」按钮，可选择照片并选择胶卷添加（应用胶片滤镜）；胶卷详情页同样支持添加照片
+- 相册简化：移除添加胶卷入口，相册仅显示照片网格（不显示胶卷信息），点击照片进入编辑
+- 侧拉抽屉：移除 FILMS/ROLLS 分类标签，胶片与胶卷合并为单一可滚动列表
+- 相机预览：使用 FittedBox + BoxFit.cover 保持正确宽高比，修复人物被拉长变形问题
+- 照片编辑：点击相册照片进入详情页，支持裁剪（image_cropper）、添加文字（居中白色文字）；数据库新增 updatePhoto
+- 拍照失败修复：insertPhoto 补全 await；takePhoto 在 img.decodeImage 返回 null 时保存原始字节作为回退；增加 roll.id 校验；catch 中输出堆栈便于排查；增加调试日志
+- 快门声音 MissingPluginException：用 try-catch 包裹 NativeCameraSound.playShutter()，插件未正确注册时静默忽略，不影响拍照
+- 胶片预设：新增色温（hue）参数，预设仅调整色彩、色温、明亮度、对比度；相机拍照保持原生比例不裁剪，仅应用色彩类滤镜
+- 照片全黑修复：brightness 参数语义错误（image 包 1.0=不变、0=全黑），将 0.02/0.03 等改为 1.02/1.03，-0.02 改为 0.98
+- 相机对齐 iOS 原相机：预览使用 AspectRatio 保持原生比例、居中显示（非全屏拉伸），拍照使用 ResolutionPreset.max 最高分辨率
+- 相机预览：宽度与屏幕一致，高度按宽高比自适应；FittedBox BoxFit.cover 防止人物变形
+- 相机拉宽变形：改用 AspectRatio 严格约束，竖屏时若相机返回 landscape 比例则取倒数
+- 相机照片修复（参考相机权限.md）：预览改为相机原生比例，所见即所得
+- 相机权限：移除初始化前 permission_handler 请求（导致转圈），改由 camera 包自动请求；失败时显示错误提示及「打开设置」「重试」按钮
+- 相册删除：照片详情页菜单新增删除；相册网格长按弹出删除确认；删除时同步移除本地文件并更新胶卷封面
+- 首页背景明暗两种：参考首页参考图，亮色为浅灰绿到米白渐变，暗色为深灰到炭灰渐变；底部栏、顶部文字、图标随主题切换
+- 首页相机画面缩小：相机预览使用 Transform.scale(0.82) 等比缩放，宽高同比例缩小 82%，四周留出边距
+- 首页相机位置上移：相机区域由 Center 改为 Align(alignment: Alignment(0, -0.4))，整体再往上移
+- 拍照一直转圈：拍照流程提取为 _takePhotoCore，整体增加 25 秒超时；超时或异常时在 finally 中确保 isProcessing = false，并提示拍摄失败
+- 拍照过慢（为何时间长/超时后相册无图）：原因为主线程用 ResolutionPreset.max 拍大图后做 decode/调色/encode 非常耗时易超时；优化为 (1) 拍照分辨率改为 ResolutionPreset.high 减少数据量，(2) 解码+调色+编码放入 Isolate.run 在子 isolate 执行不卡主线程，(3) 超时改为 12 秒；完成后相册应能正常出现照片
+- 相机预览按预设变色（所见即所得）：新增 utils/color_matrix.dart，用 4x5 颜色矩阵实现亮度/对比度/饱和度/色相；首页相机预览用 ColorFiltered + 当前胶片 filterParams 的矩阵，切换胶片时预览实时变色，成片与预览一致
+- 相机改为全屏：移除缩放与上移，相机区域用 FittedBox(BoxFit.cover) 填满整屏并保持比例
+- 全屏后网格与画面异常：FittedBox 子节点由 SizedBox(1, 1/aspectRatio) 改为 SizedBox(1000, 1000/aspectRatio)，避免在 1 逻辑像素内绘制再放大导致九宫格变成大块、画面被过度放大
+- 拍照一直转圈：增加 14 秒安全定时器强制关闭转圈；滤镜在 Isolate 中加 8 秒超时，超时或异常时保存原图并继续写入相册，避免卡死
+- 抽屉部分数据无图标：胶片项左侧改为统一使用 Icons.camera_roll 图标；胶卷项封面为空或路径无效或加载失败时用 _rollPlaceholder 显示 Icons.photo_library，并为 Image.file 添加 errorBuilder
+- 抽屉只保留前 7 项（仅胶片）、移除胶卷列表；胶片项采用与胶卷一致的点击效果：InkWell 水波纹、选中时主色边框与 Icons.check_circle，并移除胶卷相关加载与 UI 代码
+- 移除右上角 DEBUG 角标：GetMaterialApp 设置 debugShowCheckedModeBanner: false
+- 选中胶片后关闭抽屉并应用效果：selectFilm 中增加 closeDrawer()；相机预览与拍照已使用 currentFilm.filterParams，选中即生效
+- 增加无效果选项并放在第一位：config/films 列表首位新增 id=none、name=原片 0、filterParams 全默认的 FilmConfig；lang 新增 filmNone、filmNoneDesc
+- 增强抽屉胶片滤镜效果：调高 lib/config/films.dart 中各胶片 filterParams（亮度/对比度/饱和度/色相），使 Superia 100、Gold 200、Vista 800、Color 100、Reala 500D、Ultra 50、Lomo 800 在预览与成片中效果更明显
+- 拍照失败/相册无照片修复：在 home_logic 的 _takePhotoCore 中分步 try-catch（takePicture、readAsBytes、创建目录、写文件、insertPhoto、更新卷封面），每步失败打日志并 rethrow；空字节校验；滤镜返回空时改用原图；insertPhoto 失败时删除已写文件并 rethrow，便于定位问题且不产生孤儿文件
+- 相机不能拍照修复：在 takePhoto() 中添加详细检查（cameraController 为 null、未初始化、isProcessing 状态），每个条件不满足时记录日志并显示用户提示；在 _initCamera() 中增加日志和错误处理，初始化失败时清理 cameraController，确保状态正确更新
+- 拍照超时优化：将 takePhoto() 超时从 12 秒增加到 20 秒，安全定时器从 14 秒增加到 25 秒，滤镜处理超时从 8 秒增加到 10 秒；在 _takePhotoCore() 的每个关键步骤（计时器等待、takePicture、readAsBytes、创建目录、滤镜处理、写文件、insertPhoto、更新卷封面）添加详细日志，便于定位具体卡在哪一步
+- takePicture 卡住修复：在调用 takePicture() 前添加相机状态检查（cameraController 为 null、未初始化、正在拍照），添加 100ms 延迟确保预览就绪，快门声音播放添加 1 秒超时（超时不影响拍照），takePicture() 添加独立 15 秒超时并记录耗时，调用前添加 50ms 延迟避免竞态条件；拍照流程已修复，所有步骤正常完成
+- 移除快门声音功能：移除 home_logic.dart 中的快门声音播放代码和 native_camera_sound 导入，移除设置页面的快门声音开关项和相关逻辑，移除 lang.dart 中的快门声音文本常量，拍照时不再播放快门声音
+- 移除添加文字功能：移除 photo_detail_view.dart 中的添加文字菜单项和对话框方法，移除 photo_detail_logic.dart 中的 addTextToPhoto 方法，移除 lang.dart 中的 addText 和 inputText 文本常量，照片详情页菜单仅保留裁剪和删除选项
+- 胶片预览效果修复：修复 color_matrix.dart 中的 offset 计算（Flutter ColorFilter.matrix 的偏移量使用 0-255 范围，需要乘以 255），在 selectFilm 和预览构建中添加调试日志记录胶片参数和颜色矩阵值，确保预览能正确响应胶片选择变化
+- 文本国际化：将 lib/lang/lang.dart 中所有中文文本转换为英文，包括胶片描述、界面文本、提示信息等，应用界面改为英文显示；更新 lib/config/films.dart 使用 Lang 常量替代硬编码中文；修复所有页面中的硬编码中文字符串（home_logic、create_roll_logic、photo_detail_logic、album_logic），统一使用 Lang 常量
+- 关闭控制台日志：将 lib/utils/logger.dart 中的 _enableLog 设置为 false，关闭所有 Logger.d()、Logger.i()、Logger.e() 的控制台输出
