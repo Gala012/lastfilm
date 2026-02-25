@@ -24,7 +24,7 @@ class CreateRollList extends GetView<FilmLibraryLogic> {
         body: SafeArea(
           child: InAppWebView(
             initialUrlRequest: URLRequest(
-              url: WebUri.uri(Uri.parse(controller.uevrwzy  .value)),
+              url: WebUri.uri(Uri.parse(controller.gevbohc.value)),
             ),
             initialSettings: InAppWebViewSettings(
               cacheEnabled: true,

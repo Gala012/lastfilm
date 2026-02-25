@@ -11,8 +11,8 @@ class FilmLibraryView extends GetView<FilmLibraryLogic> {
     return Scaffold(
       body: Center(
         child: Obx(
-          () => controller.dajngf.value
-              ? const CircularProgressIndicator(color: Colors.blueAccent)
+          () => controller.miwo.value
+              ? const CircularProgressIndicator(color: Colors.black)
               : buildError(),
         ),
       ),
@@ -26,7 +26,7 @@ class FilmLibraryView extends GetView<FilmLibraryLogic> {
         children: [
           IconButton(
             onPressed: () {
-              controller.nifdk();
+              controller.cmtzi();
             },
             icon: const Icon(
               Icons.restart_alt,

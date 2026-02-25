@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:last_film/pages/create_roll/create_roll_list.dart';
+import 'package:last_film/pages/film_library/film_library_binding.dart';
+import 'package:last_film/pages/film_library/film_library_view.dart';
 import '../pages/main/main_binding.dart';
 import '../pages/main/main_view.dart';
 import '../pages/home/home_binding.dart';
@@ -45,7 +48,7 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeCtrl.darkMode.value ? ThemeMode.dark : ThemeMode.light,
-          initialRoute: '/last_main',
+          initialRoute: '/',
           getPages: Film,
         ));
       },
@@ -53,12 +56,14 @@ class MyApp extends StatelessWidget {
   }
 }
 List<GetPage<dynamic>> Film = [
+  GetPage(name: '/', page: () => const FilmLibraryView(), binding: FilmLibraryBinding()),
   GetPage(name: '/last_main', page: () => const MainView(), binding: MainBinding()),
   GetPage(name: '/last_home', page: () => const HomeView(), binding: HomeBinding()),
   GetPage(name: '/last_album', page: () => const AlbumView(), binding: AlbumBinding()),
   GetPage(name: '/last_settings', page: () => const SettingsView(), binding: SettingsBinding()),
   GetPage(name: '/last_roll_detail', page: () => const RollDetailView(), binding: RollDetailBinding()),
   GetPage(name: '/last_create_roll', page: () => const CreateRollView(), binding: CreateRollBinding()),
+  GetPage(name: '/last_create_list', page: () => const CreateRollList()),
   GetPage(name: '/last_photo_detail', page: () => const PhotoDetailView(), binding: PhotoDetailBinding()),
   GetPage(name: '/last_privacy_policy', page: () => const PrivacyPolicyView(), binding: PrivacyPolicyBinding()),
   GetPage(name: '/last_terms', page: () => const TermsView(), binding: TermsBinding()),
