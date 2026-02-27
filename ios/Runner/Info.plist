@@ -27,7 +27,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Please grant camera permissions to take photos.</string>
+	<string>Please grant camera permissions to take photos and create film rolls.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Please grant album permissions to select photos to create a film roll.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
